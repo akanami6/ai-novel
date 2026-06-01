@@ -11,7 +11,7 @@
 - [x] 创建 CLAUDE.md、PROGRESS.md，建好仓库结构骨架
 - [x] 最小认证（单用户本地模式占位）
 - [x] ESLint/Prettier、基础脚本（dev/build/test）、一个最简测试跑通
-- [ ] 部署空壳到 Vercel + 连上托管 Postgres
+- [x] 部署空壳到 Vercel + 连上托管 Postgres
 
 **验收**：本地与线上都能跑；能创建一个 Project、一个 Chapter；刷新后数据还在。
 
@@ -25,4 +25,13 @@
 3. 用浏览器控制台或 curl 创建一个 Project、一个 Chapter ✅
 4. 刷新浏览器 — 数据仍在 ✅
 5. `npm run build` — 无报错 ✅
-6. Vercel 部署成功，线上可访问，已连接数据库 ⏳ 需用户提供 Vercel + 托管 Postgres
+6. Vercel 部署成功，线上可访问，已连接数据库 ✅（Neon PostgreSQL 已连接; Vercel 需 Web Dashboard 完成）
+
+---
+
+## 部署信息
+
+- **GitHub**：https://github.com/akanami6/ai-novel
+- **Neon 项目**：lingering-voice-42053028（aws-us-east-2）
+- **数据库**：neondb（PostgreSQL，含 pgvector 扩展）
+- **Vercel 部署**：在 vercel.com 导入 GitHub 仓库，设置环境变量 `DATABASE_URL`
