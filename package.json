@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --passWithNoTests",
-    "postinstall": "node -e \"try{require('child_process').execSync('prisma generate',{stdio:'inherit'})}catch(e){console.log('prisma generate skipped (will run at build)')}\""
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",
