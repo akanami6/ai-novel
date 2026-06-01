@@ -1,0 +1,81 @@
+// Phase 0–3: SQLite for local development
+// Phase 0.6+: Switch to PostgreSQL by changing provider and updating array types
+//   - provider = "postgresql"
+//   - aliases: String[] → aliases: String (JSON-encoded in app layer for SQLite compat)
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id       String    @id @default(cuid())
+  email    String?   @unique
+  projects Project[]
+}
+
+model Project {
+  id          String       @id @default(cuid())
+  userId      String
+  title       String
+  synopsis    String?
+  targetWords Int?
+  chapters    Chapter[]
+  bibleEntries BibleEntry[]
+  plotThreads  PlotThread[]
+  createdAt   DateTime     @default(now())
+  user        User         @relation(fields: [userId], references: [id])
+}
+
+model Chapter {
+  id        String   @id @default(cuid())
+  projectId String
+  index     Int
+  title     String
+  goal      String?
+  content   String   @default("")
+  wordCount Int      @default(0)
+  updatedAt DateTime @updatedAt
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, index])
+  @@index([projectId])
+}
+
+model BibleEntry {
+  id         String  @id @default(cuid())
+  projectId  String
+  kind       String  // 'character' | 'location' | 'item' | 'faction' | 'rule'
+  name       String
+  aliases    String  @default("[]") // JSON array string (PostgreSQL: String[])
+  attributes String  @default("{}") // JSON object string (PostgreSQL: Json)
+  isMajor    Boolean @default(false)
+  project    Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, kind])
+}
+
+model PlotThread {
+  id              String  @id @default(cuid())
+  projectId       String
+  name            String
+  status          String  @default("open") // 'open' | 'resolved'
+  plantedChapter  Int?
+  payoffChapter   Int?
+  notes           String?
+  project         Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, status])
+}
+
+model AiInteraction {
+  id           String   @id @default(cuid())
+  projectId    String
+  feature      String
+  model        String
+  inputTokens  Int
+  outputTokens Int
+  createdAt    DateTime @default(now())
+}
