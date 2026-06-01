@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.8.0",
