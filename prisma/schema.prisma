@@ -1,13 +1,10 @@
-// Phase 0–3: SQLite for local development
-// Phase 0.6+: Switch to PostgreSQL by changing provider and updating array types
-//   - provider = "postgresql"
-//   - aliases: String[] → aliases: String (JSON-encoded in app layer for SQLite compat)
+// PostgreSQL schema for Neon / Supabase (pgvector in Phase 4)
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 model User {
@@ -45,14 +42,14 @@ model Chapter {
 }
 
 model BibleEntry {
-  id         String  @id @default(cuid())
+  id         String   @id @default(cuid())
   projectId  String
-  kind       String  // 'character' | 'location' | 'item' | 'faction' | 'rule'
+  kind       String   // 'character' | 'location' | 'item' | 'faction' | 'rule'
   name       String
-  aliases    String  @default("[]") // JSON array string (PostgreSQL: String[])
-  attributes String  @default("{}") // JSON object string (PostgreSQL: Json)
-  isMajor    Boolean @default(false)
-  project    Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  aliases    String[] @default([])
+  attributes Json     @default("{}")
+  isMajor    Boolean  @default(false)
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@index([projectId, kind])
 }
