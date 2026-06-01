@@ -1,9 +1,10 @@
-import { defineConfig, env } from 'prisma/config';
+import { defineConfig } from 'prisma/config';
 
 export default defineConfig({
   schema: 'prisma/schema.prisma',
   datasource: {
-    url: process.env.DATABASE_URL ?? env('DATABASE_URL') ?? 'postgresql://localhost:5432/dummy',
+    // prisma generate doesn't need a real DB; use env var for migrate
+    url: process.env.DATABASE_URL || 'postgresql://localhost:5432/dummy',
   },
   migrations: {
     path: 'prisma/migrations',
